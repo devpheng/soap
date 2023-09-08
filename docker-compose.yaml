@@ -1,0 +1,62 @@
+version: '3'
+services:
+    app:
+        depends_on:
+            - mysql
+        build: ./
+        restart: on-failure
+        env_file: ./.env
+        ports:
+            - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                    "spring.datasource.url"  : "jdbc:mysql://mysql:$MYSQLDB_DOCKER_PORT/$DB_DATABASE?useSSL=false",
+                    "spring.datasource.username" : "$DB_USERNAME",
+                    "spring.datasource.password" : "$DB_PASSWORD",
+                    "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+                    "spring.jpa.hibernate.ddl-auto" : "update"
+                }'
+        volumes:
+            - .m2:/root/.m2
+        stdin_open: true
+        tty: true
+    mysql:
+        image: 'mysql/mysql-server:8.0.22'
+        ports:
+            - '8181:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'soap-mysql:/var/lib/mysql'
+        networks:
+            - soap
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    phpmyadmin:
+        depends_on:
+            - mysql
+        image: phpmyadmin/phpmyadmin
+        environment:
+            - PMA_HOST=mysql
+            - PMA_PORT=3306
+        networks:
+            - soap
+        ports:
+            - 8001:80
+networks:
+    soap:
+        driver: bridge
+volumes:
+    soap-mysql:
+        driver: local
