@@ -14,6 +14,7 @@ import com.api.api.model.User;
 import com.api.api.service.UserService;
 import java.util.Optional;
 import com.google.gson.Gson;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api")
@@ -37,6 +38,16 @@ public class UserController {
             return new ResponseEntity<>(gson.toJson(userRes.get()), HttpStatus.OK);
         }
         return new ResponseEntity<>("User not found!!!", HttpStatus.NOT_FOUND);
+        
+    }
+
+    @GetMapping("/users")
+    ResponseEntity<String> getAll() {
+        List<User>users = userService.getAll();
+        if(users.size() > 0) {
+            return new ResponseEntity<>(gson.toJson(users), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("There is no users", HttpStatus.OK);
         
     }
 }
