@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.api.api.model.User;
 import com.api.api.repository.UserRepository;
 import com.api.api.service.UserService;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -14,5 +15,9 @@ public class UserServiceImpl implements UserService {
 
     public User create(User user) {
         return userRepository.save(user);
+    }
+
+    public Optional<User> get(long id) {
+        return userRepository.findById(id);
     }
 }
