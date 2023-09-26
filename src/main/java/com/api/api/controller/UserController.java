@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -49,5 +50,13 @@ public class UserController {
         }
         return new ResponseEntity<>("There is no users", HttpStatus.OK);
         
+    }
+
+    @PatchMapping("/user")
+    ResponseEntity<String> update(@RequestBody User user) {
+        if(userService.update(user)) {
+            return new ResponseEntity<>(gson.toJson(user), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_MODIFIED);
     }
 }

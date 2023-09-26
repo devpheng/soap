@@ -26,4 +26,17 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
+    public boolean update(User user) {
+        Optional<User> resUser = userRepository.findById(user.getId());
+        if(resUser.isPresent()) {
+            User userObj = resUser.get();
+            userObj.setEmail(user.getEmail());
+            userObj.setFirstName(user.getFirstName());
+            userObj.setLastName(user.getLastName());
+            userRepository.save(userObj);
+            return true;
+        }
+        return false;
+    }
 }
