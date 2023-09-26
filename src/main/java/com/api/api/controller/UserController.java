@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.api.api.model.User;
@@ -58,5 +59,13 @@ public class UserController {
             return new ResponseEntity<>(gson.toJson(user), HttpStatus.OK);
         }
         return new ResponseEntity<>("User not found", HttpStatus.NOT_MODIFIED);
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    ResponseEntity<String> delete(@PathVariable Long id) {
+        if(userService.delete(id)) {
+            return new ResponseEntity<>("User id " + id + " has been deleted!!!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User not found!!!", HttpStatus.NOT_FOUND);
     }
 }

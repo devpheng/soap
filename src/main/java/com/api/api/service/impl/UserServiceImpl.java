@@ -39,4 +39,14 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    public boolean delete(long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
 }
