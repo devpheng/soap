@@ -5,7 +5,9 @@ import com.api.api.model.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface UserService extends UserDetailsService{
 
     public User create(User user);
 
