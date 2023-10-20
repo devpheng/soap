@@ -35,10 +35,10 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String firstName;
+    private String firstname;
 
     @Column(nullable = false, length = 100)
-    private String lastName;
+    private String lastname;
 
     @Column(nullable = false, length = 100)
     private String email;

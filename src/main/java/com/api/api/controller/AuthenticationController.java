@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.api.model.LoginDTO;
 import com.api.api.model.LoginResponseDTO;
 import com.api.api.model.RegistrationDTO;
 import com.api.api.model.User;
@@ -21,11 +22,11 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public User registerUser(@RequestBody RegistrationDTO body){
-        return authenticationService.registerUser(body.getFirstName(), body.getLastName(), body.getEmail(), body.getUsername(), body.getPassword());
+        return authenticationService.registerUser(body.getFirstname(), body.getLastname(), body.getEmail(), body.getUsername(), body.getPassword());
     }
     
     @PostMapping("/login")
-    public LoginResponseDTO loginUser(@RequestBody RegistrationDTO body){
+    public LoginResponseDTO loginUser(@RequestBody LoginDTO body){
         return authenticationService.loginUser(body.getUsername(), body.getPassword());
     }
 }

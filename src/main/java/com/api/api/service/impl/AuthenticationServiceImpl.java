@@ -1,6 +1,7 @@
 package com.api.api.service.impl;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     private TokenService tokenService;
 
     public User registerUser(String firstName, String lastName, String email, String username, String password){
+
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isPresent()) {
+            return user.get();
+        }
 
         String encodedPassword = passwordEncoder.encode(password);
         Role userRole = roleRepository.findByRole("USER").get();
